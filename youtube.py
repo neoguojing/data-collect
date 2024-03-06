@@ -3,7 +3,7 @@ import subprocess
 
 def dowload_webm(url):
     # 定义命令
-    command = f"yt-dlp -o '%(upload_date>%Y)s/%(title)s.%(ext)s' {url}"
+    command = f"yt-dlp --write-auto-subs --sub-lang zh-Hans,en -o '%(upload_date>%Y)s/%(title)s.%(ext)s' {url}"
     # 执行命令
     try:
         # 使用 subprocess.run() 方法执行命令
@@ -53,7 +53,8 @@ def merge_video_subtitle():
     return output_video
 
 if __name__ == "__main__":
+    dowload_webm("https://youtube.com/shorts/uvLsfzCEir8?feature=shared")
     # video,audio,subtile = pre_process_video("The Newest Computer Chips aren’t “Electronic” [iOXn4vqYOJA].webm")
     # subtile_translate("The Newest Computer Chips aren’t “Electronic” [iOXn4vqYOJA].en.vtt")
-    merge_video_subtitle()
+    # merge_video_subtitle()
 
