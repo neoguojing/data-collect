@@ -1,0 +1,7 @@
+
+googletrans==3.1.0a0
+tweepy==4.14.0
+yt-dlp==2023.12.30
+webvtt-py==0.4.6
+ffmpeg-python==0.2.0
+
