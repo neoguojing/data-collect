@@ -163,4 +163,5 @@ cython_debug/
 *.vtt
 *.opus
 *.mp3
+*.wav
 
