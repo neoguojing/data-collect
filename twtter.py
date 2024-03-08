@@ -18,7 +18,7 @@ def connnect_to_twtter():
         print(user.username, user.profile_image_url)
 
 
-def images_to_video(input_pattern, name, duration=10, fps=1/10, pix_fmt='yuv420p', size='1920:1080', codec='libx264', format='mp4', bitrate='4M'):  
+def images_to_video(input_pattern, name, duration=10, fps=1/10, pix_fmt='yuv420p', size='1920:1080', codec='libvpx-vp9', format='webm', bitrate='4M'):  
     import ffmpeg
     output_file = f"./data/{name}.{format}"  
     (  
@@ -64,11 +64,12 @@ def make_subtitle(text,subtitle_name,start="00:00:00.500",end="00:00:09.000"):
     vtt.save(subtitle_name)
 
 def process_twtter_image(image_path,video_name):
-    
+    from utils import merge_video_subtitle
     text = ocr(image_path)
     subtitle_path = "./data/"+video_name+".vtt"
     make_subtitle(text,subtitle_path)
-    images_to_video(image_path,video_name)
+    video_path = images_to_video(image_path,video_name)
+    merge_video_subtitle(video_path,subtitle_path,"./data/"+video_name+"_merge.webm")
 
 
 

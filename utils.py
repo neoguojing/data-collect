@@ -31,9 +31,9 @@ def translate(text,src='en',dest='zh-cn'):
     return translate_text.text
 
 
-def merge_video_subtitle(input_video,input_subtitle):
+def merge_video_subtitle(input_video,input_subtitle,output_video):
     import ffmpeg
-    output_video = 'merge_video_subtitle.webm'
-
-    ffmpeg.input(input_video).output(output_video, vf='subtitles=' + input_subtitle).run()
+    
+    ffmpeg.input(input_video).output(output_video,vf='subtitles=' + input_subtitle).run()
+    print(input_video,input_subtitle,output_video)
     return output_video

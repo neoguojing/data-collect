@@ -64,6 +64,7 @@ def pre_process_video(filepath,output_video=None,output_audio=None,output_subtit
 def subtile_translate(src,dst):
     import webvtt
     from googletrans import Translator
+    from utils import text_join,text_segment
     translator = Translator()
     
     vtt = webvtt.read(src)
@@ -72,7 +73,11 @@ def subtile_translate(src,dst):
         src_text += caption.text
 
     print(src_text)
+    src_text = text_join(src_text)
+    src_text = text_segment(src_text)
+    print(src_text)
     translate_text = translator.translate(src_text,src='en',dest='zh-cn') 
+    print(translate_text.text)
     dst_texts = translate_text.text.split("。")
 
     del_idx = []
@@ -96,11 +101,12 @@ def subtile_translate(src,dst):
 def proccess_youtube_video(url):
     from utils import merge_video_subtitle
     video_path,subtitle_path_zh,subtitle_path_en = dowload_video(url)
-
+    video_name =  video_path.rsplit('.', 1)[0]
     if subtitle_path_zh is None and subtitle_path_en is not None:
-        subtitle_path_zh = video_path.rsplit('.', 1)[0] + '.zh-Hans.' + "vtt"
+        subtitle_path_zh = video_name + '.zh-Hans.' + "vtt"
         subtile_translate(subtitle_path_en,subtitle_path_zh)
-        merge_video_subtitle(video_path,subtitle_path_zh)
+        target_video = video_name+"_merge.webm"
+        # merge_video_subtitle(video_path,subtitle_path_zh,target_video)
 
     
 
@@ -111,8 +117,8 @@ def proccess_youtube_video(url):
 
 
 if __name__ == "__main__":
-    # proccess_youtube_video("https://youtu.be/MUqNwgPjJvQ?feature=shared")
-    pre_process_video("./data/Transformer models： Encoders.webm")
+    proccess_youtube_video("https://youtu.be/MUqNwgPjJvQ?feature=shared")
+    # pre_process_video("./data/Transformer models： Encoders.webm")
     # dowload_webm("https://youtube.com/shorts/uvLsfzCEir8?feature=shared")
     # video,audio,subtile = pre_process_video("The Newest Computer Chips aren’t “Electronic” [iOXn4vqYOJA].webm")
     # subtile_translate("The Newest Computer Chips aren’t “Electronic” [iOXn4vqYOJA].en.vtt")
