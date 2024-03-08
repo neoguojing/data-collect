@@ -64,12 +64,13 @@ def make_subtitle(text,subtitle_name,start="00:00:00.500",end="00:00:09.000"):
     vtt.save(subtitle_name)
 
 def process_twtter_image(image_path,video_name):
-    from utils import merge_video_subtitle
+    from utils import merge_video_subtitle,draw_text_on_image
     text = ocr(image_path)
     subtitle_path = "./data/"+video_name+".vtt"
     make_subtitle(text,subtitle_path)
+    draw_text_on_image(image_path,text)
     video_path = images_to_video(image_path,video_name)
-    merge_video_subtitle(video_path,subtitle_path,"./data/"+video_name+"_merge.webm")
+    # merge_video_subtitle(video_path,subtitle_path,"./data/"+video_name+"_merge.webm")
 
 
 
