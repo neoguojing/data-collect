@@ -91,14 +91,10 @@ def subtile_translate(src,dst):
     vtt.save(dst)
     return dst
 
-def merge_video_subtitle(input_video,input_subtitle):
-    import ffmpeg
-    output_video = 'merge_video_subtitle.webm'
 
-    ffmpeg.input(input_video).output(output_video, vf='subtitles=' + input_subtitle).run()
-    return output_video
 
 def proccess_youtube_video(url):
+    from utils import merge_video_subtitle
     video_path,subtitle_path_zh,subtitle_path_en = dowload_video(url)
 
     if subtitle_path_zh is None and subtitle_path_en is not None:

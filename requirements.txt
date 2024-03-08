@@ -4,4 +4,8 @@ tweepy==4.14.0
 yt-dlp==2023.12.30
 webvtt-py==0.4.6
 ffmpeg-python==0.2.0
+pytesseract==0.3.10
+spacy=3.7.4
 
+
+python -m spacy download en_core_web_sm

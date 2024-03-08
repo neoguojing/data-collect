@@ -164,4 +164,5 @@ cython_debug/
 *.opus
 *.mp3
 *.wav
+*.mp4
 

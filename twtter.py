@@ -17,15 +17,60 @@ def connnect_to_twtter():
     for user in user_info.data:
         print(user.username, user.profile_image_url)
 
-def images_to_video(input_pattern,duration,fps=24,pix_fmt='yuv420p',s='1920×1080',c='libx264',f='mp4',b='4M'):
+
+def images_to_video(input_pattern, name, duration=10, fps=1/10, pix_fmt='yuv420p', size='1920:1080', codec='libx264', format='mp4', bitrate='4M'):  
     import ffmpeg
-    output_file = f"video_from_images.{f}"
-    (
-        ffmpeg.input(input_pattern, pattern_type='glob', framerate=fps)
-        .output(output_file, pix_fmt=pix_fmt,s=s,c=c,f=f,b=b,frames=duration*fps).run()
+    output_file = f"./data/{name}.{format}"  
+    (  
+        ffmpeg.input(input_pattern, pattern_type='glob', framerate=fps,t=duration)  
+        .output(output_file, pix_fmt=pix_fmt, vcodec=codec, vf='scale={}'.format(size), video_bitrate=bitrate)  
+        .run()  
+    )  
+  
+    return output_file
+
+def ocr(image_path):
+    import pytesseract
+    from PIL import Image
+    from utils import translate,text_segment,text_join
+    # Open the image
+    image = Image.open(image_path)
+
+    # Extract text from the image
+    text = pytesseract.image_to_string(image)
+
+    # Print the extracted text
+    text = text_join(text)
+    text = text_segment(text)
+
+    translate_text = translate(text)
+    print(translate_text)
+    
+    return translate_text
+
+def make_subtitle(text,subtitle_name,start="00:00:00.500",end="00:00:09.000"):
+    from webvtt import WebVTT, Caption
+    vtt = WebVTT()
+
+    # creating a caption with a list of lines
+    caption = Caption(
+        start,
+        end,
+        [text]
     )
 
-    return output_file
+    # adding a caption
+    vtt.captions.append(caption)
+    vtt.save(subtitle_name)
+
+def process_twtter_image(image_path,video_name):
     
+    text = ocr(image_path)
+    subtitle_path = "./data/"+video_name+".vtt"
+    make_subtitle(text,subtitle_path)
+    images_to_video(image_path,video_name)
 
 
+
+if __name__ == "__main__":
+    process_twtter_image("./data/Screenshot from 2024-03-08 11-23-44.png","test")
