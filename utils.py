@@ -59,5 +59,6 @@ def draw_text_on_image(image_path,text):
     draw.text(position, text, font=font, fill=color)  
     
     # 保存修改后的图片  
+    image_path = image_path.rsplit('.', 1)[0] + "_text."+image_path.rsplit('.', 1)[1]
     image.save(image_path)
     return image_path

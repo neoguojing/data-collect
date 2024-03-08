@@ -68,7 +68,7 @@ def process_twtter_image(image_path,video_name):
     text = ocr(image_path)
     subtitle_path = "./data/"+video_name+".vtt"
     make_subtitle(text,subtitle_path)
-    draw_text_on_image(image_path,text)
+    image_path = draw_text_on_image(image_path,text)
     video_path = images_to_video(image_path,video_name)
     # merge_video_subtitle(video_path,subtitle_path,"./data/"+video_name+"_merge.webm")
 
