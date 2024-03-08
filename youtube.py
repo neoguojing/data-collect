@@ -106,7 +106,7 @@ def proccess_youtube_video(url):
         subtitle_path_zh = video_name + '.zh-Hans.' + "vtt"
         subtile_translate(subtitle_path_en,subtitle_path_zh)
         target_video = video_name+"_merge.webm"
-        # merge_video_subtitle(video_path,subtitle_path_zh,target_video)
+        merge_video_subtitle(video_path,subtitle_path_zh,target_video)
 
     
 
