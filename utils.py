@@ -38,9 +38,9 @@ def merge_video_subtitle(input_video,input_subtitle,output_video):
     print(input_video,input_subtitle,output_video)
     return output_video
 
-def draw_text_on_image(image_path,text):
+def draw_text_on_image(image_path,text,font_size=24):
     from PIL import Image, ImageDraw, ImageFont  
-  
+    import textwrap
     # 打开图片  
     image = Image.open(image_path)  
     
@@ -49,14 +49,29 @@ def draw_text_on_image(image_path,text):
     
     # 选择一个字体和大小  
     # 你需要有一个.ttf字体文件，并指定其路径  
-    font = ImageFont.truetype('song.ttf', 24)  
+    font = ImageFont.truetype('song.ttf', font_size)  
     
-    # 定义文本内容、位置以及颜色   
-    position = (20, 200)  # (x, y) 坐标  
+     # 获取图像和字体的尺寸
+    image_width, image_height = image.size
+
+    text_wrapper = textwrap.TextWrapper(width=image_width // font_size)
+    lines = text_wrapper.wrap(text)
+
+    l,t,r,b = font.getbbox(lines[0])
+    text_height =  (b-t) *len(lines)
     color = (255, 255, 255)  # RGB颜色，白色  
     
     # 在图片上绘制文本  
-    draw.text(position, text, font=font, fill=color)  
+    x = 0
+    y = (image_height - text_height) // 2
+
+    # 绘制文字
+    line_height = b-t
+    for line in lines:
+        line_width = font.getlength(line)
+        x = (image_width - line_width) // 2
+        draw.text((x, y), line, color, font=font)
+        y += line_height
     
     # 保存修改后的图片  
     image_path = image_path.rsplit('.', 1)[0] + "_text."+image_path.rsplit('.', 1)[1]
